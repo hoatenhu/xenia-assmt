@@ -33,9 +33,13 @@ Make sure you have the following installed:
    yarn
 ## Usage
 
-1. Running on Local:
+1. Run on Local:
     ```bash
     yarn dev
+2. Run tests:
+
+    ```bash
+    yarn test
 ## URL
 
 I hosted frontend on [Vercel](https://vercel.com/) with url https://xenia-assmt.vercel.app/

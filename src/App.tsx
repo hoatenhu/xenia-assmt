@@ -1,4 +1,3 @@
-import "./App.css";
 import DataList from "./components/DataList/DataList";
 
 function App() {
