@@ -1,8 +1,9 @@
-export async function cropImage(file) {
-  return new Promise((resolve, reject) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function cropImage(file: any) {
+  return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = async (e) => {
+    reader.onload = async (e: any) => {
       const image = new Image();
       image.src = e.target.result;
 
@@ -33,7 +34,7 @@ export async function cropImage(file) {
         canvas.height = cropHeight;
 
         // Draw the image on the canvas with the calculated dimensions
-        ctx.drawImage(
+        ctx?.drawImage(
           image,
           offsetX,
           offsetY,

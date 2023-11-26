@@ -1,28 +1,40 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import axios from "axios";
 import { styles } from "./styles";
 import { cropImage } from "../../functions/cropFunction";
+import { baseUrl } from "../../api";
 
-const DataForm = ({ onUploadDone }) => {
-  const [formData, setFormData] = useState({
+interface DataFormProps {
+  onUploadDone: () => void;
+}
+
+interface FormDataStateType {
+  name: string;
+  email: string;
+  avatar: RequestInfo | URL;
+}
+
+const DataForm = ({ onUploadDone }: DataFormProps) => {
+  const [formData, setFormData] = useState<FormDataStateType>({
     name: "",
     email: "",
-    avatar: null,
+    avatar: "",
   });
-  const [selectedImage, setSelectedImage] = useState("");
-  const [showErrorImage, setShowErrorImage] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<RequestInfo | URL>("");
+  const [showErrorImage, setShowErrorImage] = useState<boolean>(false);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const resetUploadForm = () => {
     setFormData({
       name: "",
       email: "",
-      avatar: null,
+      avatar: "",
     });
     setSelectedImage("");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -33,7 +45,7 @@ const DataForm = ({ onUploadDone }) => {
       formDataObj.append("name", formData.name);
       formDataObj.append("email", formData.email);
 
-      await axios.post("http://localhost:3001/data", formDataObj, {
+      await axios.post(`${baseUrl}/data`, formDataObj, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -47,11 +59,11 @@ const DataForm = ({ onUploadDone }) => {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: any) => {
     setShowErrorImage(false);
     if (e.target.name === "avatar") {
+      let image = "";
       const file = e.target.files[0];
-
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           setShowErrorImage(true);
@@ -59,7 +71,7 @@ const DataForm = ({ onUploadDone }) => {
         } else {
           try {
             const file = e.target.files[0];
-            const image = await cropImage(file);
+            image = await cropImage(file);
             setSelectedImage(image);
           } catch (err) {
             console.log(err);
@@ -68,14 +80,16 @@ const DataForm = ({ onUploadDone }) => {
       }
       setFormData({ ...formData, avatar: image });
     } else {
-      console.log("aa");
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
 
   return (
     <div>
-      <form style={styles.formContainer} onSubmit={handleSubmit}>
+      <form
+        style={styles.formContainer as React.CSSProperties}
+        onSubmit={handleSubmit}
+      >
         <label>
           Name:
           <input
@@ -103,7 +117,12 @@ const DataForm = ({ onUploadDone }) => {
             onChange={handleChange}
           />
           {selectedImage && (
-            <img src={selectedImage} alt="Preview" height={50} width={50} />
+            <img
+              src={selectedImage as string | undefined}
+              alt="Preview"
+              height={50}
+              width={50}
+            />
           )}
         </label>
         {showErrorImage && (
