@@ -38,4 +38,4 @@ Make sure you have the following installed:
     yarn dev
 ## URL
 
-I hosted frontend on [Render](https://vercel.com/) with url https://xenia-assmt.vercel.app/
+I hosted frontend on [Vercel](https://vercel.com/) with url https://xenia-assmt.vercel.app/
